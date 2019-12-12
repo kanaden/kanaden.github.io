@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Memories of summer vacation</title>
+    <style>
+        body{
+            margin: 20px;
+            font-family: "Hannari", "Sawarabi Gothic";
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-image: url(images/background.jpeg);
+            height: 100%;
+        }
+        nav{
+            position: fixed;
+            top: 0;
+            background-color: rgba(100,100,0,0.9);
+            width: 300px;
+            height: 100vh;
+            right: 0;
+        }
+        div{
+            font-size: 1em;
+            color: white;
+            font-style: italic;
+            left: -30px;
+            margin: 8px;
+            position: relative;
+            display: inline-block;
+        }
+        div::before,
+        div::after {
+            border-bottom: solid 0.9px white;
+            bottom: 0px;
+            content: "";
+            display: block;
+            position: absolute;
+            transition: all .3s ease;
+            -webkit-transition: all .3s ease;
+            width: 0;
+        }
+        div::before {
+            left: 50%;
+        }
+        div::after {
+            right: 45%;
+        }
+        div:hover::before,
+        div:hover::after {
+            width: 53%;
+        }
+        p{
+            color: white;
+            font-size: 1.3em;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        li{
+            list-style: none;
+            margin-left: 20px;
+        }
+        h1{
+            margin: 10px;
+        }
+        #menu{
+            position: fixed;
+            top: 10px;
+            right: 18px;
+        }
+        #menu:hover{
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        #back{
+            position: fixed;
+            top: 10px;
+            right: 18px;
+        }
+        #back:hover{
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        canvas{
+            margin: 30px;
+            background-image: none;
+            width: 50vw;
+            height: 70vh;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+        div2{
+            font-family: "Sawarabi Gothic", serif;
+            margin: 50px 30px 30px 30px;
+            position: fixed;
+            font-size: 0.9em;
+            color: dimgrey;
+            width: 60vw;
+        }
+        div3{
+            font-family: "Sawarabi Gothic", serif;
+            margin: 30px;
+            position: fixed;
+            font-size: 0.9em;
+            color: dimgrey;
+        }
+    </style>
+</head>
+<body>
+    <script  src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link href="https://fonts.googleapis.com/earlyaccess/hannari.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
+    
+    <h1>なつやすみのおもいで</h1>
+    <div2>今年の夏休みはインターンシップに参加したりSPI対策講座を受けたりと遊び以外で忙しい夏になりました。<br>友達と遊んだりどこかへ出かけたりすることはあまりできなかったですが、たくさん楽しいことはできました。<br>それでも、来年は就活でもっと忙しくなると思うので、今年にできることをもっとやっておけばよかったなと少し後悔しています。<br><br>＊私の夏休みの思い出は右のおしながきから選ぶことで確認できます＊</div2>
+    <canvas></canvas>
+    
+    <div3></div3>
+    
+    <nav>
+      <ul>
+          <br><br><p>－ おしながき －</p>
+          <li><div id="cat">・しーちゃんに<font color="orange">会</font>いに<font color="orange">行</font>った</div></li>
+          <li><div id="cake">・ケーキを<font color="pink">食</font>べた</div></li>
+          <li><div id="cafe">・ネットカフェに<font color="skyblue">行</font>った</div></li>
+          <li><div id="game">・ゲームで<font color="purple">遊</font>んだ</div></li>
+      </ul>
+    </nav>
+          
+    <div1 id="menu"><img src="images/menu.png" width="60"></div1>
+    <div1 id="back"><img src="images/back.png" width="60"></div1>
+   
+    <script>
+        //ナビゲーションの非表示
+        $("nav").show();
+        $("#menu").hide();
+        $("#back").on("click",function(){
+            $("nav").fadeOut(600);
+            $("#back").hide();
+            $("#menu").show();
+        });
+        
+        $("#menu").on("click",function(){
+            $("nav").fadeIn(600);
+            $("#menu").hide();
+            $("#back").fadeIn(600);
+        });
+        
+        $("canvas").hide();
+        $("div").on("click",function(){
+            $("div2").hide();
+            $("canvas").show();
+            $("nav").fadeOut(600);
+            $("#back").hide();
+            $("#menu").show();
+        });
+       
+        $("#cat").on("click",function(){
+            $("canvas").css('background-image','url(images/cat.jpg)');
+            $("div3").html("<b>【 しーちゃん 】</b><br><br>今夏からおばあちゃんの家で飼い始めた雄猫のしる（通称：しーちゃん）です。基本的におばあちゃんとおじさんにしか懐きません。唯一、ご飯（CIAOちゅ～る）をあげるときにしか近づいてきてくれません。カメラのレンズを向けるとそっぽを向きます。玩具で遊んであげようとしても寝転がって動こうとしません。猫じゃらしで遊ぶときもこっちから顔の前に持って行ってあげないと遊ぼうとしません。なんて亭主関白な猫なんでしょう。");
+        });
+        
+        $("#cake").on("click",function(){
+            $("canvas").css('background-image','url(images/cake.jpg)');
+            $("div3").html("<b>【 リコッタチーズケーキ 】</b><br><br>家族で「オールドヒッコリー」というイタリアンレストランに行きました。そこはピザをメインメニューに、安全で美味しい食材を厳選し、シェフが本場の味を知った上でそれを提供してくれるお店です。本場イタリア直輸入の石窯で焼きあげるピザは生地はパリパリでチーズがトロトロでぺろりと完食しちゃいます。この店はピザ以外にもパスタやグラタン、パエリアなどがあり、デザートもドルチェや手作りのケーキが何種類か用意されています。中でも、リコッタチーズケーキはさっぱりとしたチーズムースと甘酸っぱいイチゴのソースが絶妙に合わさってとても美味しいです。口の中で溶けてしまうくらいふんわりしていて何個でも食べられそうでした。");
+        });
+        
+        $("#cafe").on("click",function(){
+            $("canvas").css('background-image','url(images/cafe.jpg)');
+            $("div3").html("<b>【 Booth</b>　Net cafe & Capsule<b> 】</b><br><br>新宿歌舞伎町にあるネットカフェとカプセルホテルが融合した”Booth”です。広々としたオープンカフェや充実した個室ブース、女性でも安心して利用できるカプセルブースなど、さまざまなシーンで利用できます。オープンカフェスペースでは各席に一台パソコンが完備されており、開放的な空間でネット検索や漫画などを読むことができます。仕事や学校帰りに気軽に寄って休憩することもできてお勧めです。");
+        });
+        
+        $("#game").on("click",function(){
+            $("canvas").css('background-image','url(images/game.jpg)');
+            $("div3").html("<b>【 Identity V 】</b><br><br>私が去年の9月から遊んでいる非対称対戦型のアクションゲームIdentity V（第五人格）です。このゲームは、まずサバイバー側（最大４人）とハンター側（１人）のどちらかを選択します。そして、各々が持つ固有の能力を駆使してサバイバーはハンターから逃げながら脱出を目指し、ハンターは逃げ惑うサバイバーを捕らえるゲームです。ゲーム内では定期的にイベントが催され、与えられたタスクをこなしていくとキャラクターの衣装やモーションなどがもらえます。また、このゲームは１人で遊んでも十分楽しめますが、ボイスチャットというものを使って友達と会話しながら遊ぶとより楽しめてお勧めです。");
+        });
+    </script>
+</body>
+</html>
