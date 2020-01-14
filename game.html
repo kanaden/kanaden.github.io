@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="googleSheets.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>最終課題</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
+  </head>
+  <style>
+      body{
+          background-image: url(bg1.jpg);
+          margin: 40px;
+          text-align: center;
+          font-family: 'Kosugi Maru', sans-serif;
+      }
+      #title{
+          text-align: left;
+          color: darkblue;
+          font-size: 2em;
+          font-weight: bold;
+      }
+      p{
+          margin: 5px;
+          position: absolute;
+          top: 22px;
+          left: 300px;
+          right: 0;
+          margin: auto;
+          font-size: 0.8em;
+          cursor: default;
+      }
+      #contents{
+          position: absolute;
+          top: 40px;
+          left: 300px;
+          right: 0;
+          margin: auto;
+          width: 30px;
+          height: 30px;
+          padding: 5px;
+          border: solid 1px black;
+          background-color: rgba(255,255,255,0.5);
+      }
+      #timer{
+          position: absolute;
+          top: 40px;
+          left: 0;
+          right: 0;
+          margin: auto;
+          font-size: 2em;
+          font-weight: bold;
+          cursor: default;
+      }
+      #start{
+          position: fixed;
+          padding: 10px;
+          font-size: 1.5em;
+          color: floralwhite;
+          top: 50%;
+          left: 0;
+          right: 0;
+          margin: auto;
+          width: 100px;
+          background-color:darkblue;
+          border: double 8px floralwhite;
+          border-radius: 30px;
+      }
+      #start:hover{
+          cursor: pointer;
+          background-color:mediumblue;
+      }
+      #alert{
+          position: fixed;
+          top: 40px;
+          left: 0;
+          right: 0;
+          margin: auto;
+          width: 550px;
+          background-color: rgba(0,0,0,0.7);
+          color: white;
+          font-size: 2em;
+          padding: 20px;
+          cursor: default;
+      }
+  </style>
+
+  <body>
+   <div id="id">あなたのID: <span id="myid"></span></div>
+   <div id="room_id">ルームID: <span id="room"></span></div>
+   <div id="title">タイムアタックカー</div>
+   <div id="timer">0:00</div>
+   <p>持ち物</p>
+   <div id="contents"></div>
+   <div id="alert">※扉を開けるには道具が必要です※</div>
+   <div id="start">スタート</div>
+   <br><br>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
+  <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+      </script>
+  <script>
+    let k,c1,c2,c3,c4;
+    let count = 0;
+      
+	// 発話機能をインスタンス化
+  	let msg = new SpeechSynthesisUtterance();
+  	let voices = window.speechSynthesis.getVoices();
+
+  	function speak(sp) {
+		// 以下オプション設定
+    	msg.voice = voices[7]; // 7:Google 日本人 ja-JP ※他は英語のみ
+    	msg.volume = 1.0; // 音量 min 0 ~ max 1
+    	msg.rate = 1.0; // 速度 min 0 ~ max 10
+    	msg.pitch = 1.0; // 音程 min 0 ~ max 2
+
+    	msg.text = sp; // 喋る内容
+    	msg.lang = 'ja-JP'; 
+
+    	// 発話実行
+    	speechSynthesis.speak(msg);
+  	}
+
+    let sp = "できるだけ早く道具を入手して、扉を開けよう！";
+      
+    $("#start").on("click",function(){
+        if(stage==0){
+            stage=1;
+            speak(sp);
+            let str, str2 = 0;
+            let id = setInterval(function(){
+                count++;
+                if(count<10){
+                    document.querySelector("#timer").textContent = "0:0"+count;
+                }else if(count<60){
+                    document.querySelector("#timer").textContent = "0:"+count;
+                }else if(60<=count){
+                    str = parseInt(count/60);
+                    str2 = count-str*60;
+                    if(str2<10){
+                        document.querySelector("#timer").textContent = str+":0"+str2;
+                    }else{
+                        document.querySelector("#timer").textContent = str+":"+str2;
+                    }
+                }
+                if(stage==2){
+                    clearInterval(id);
+                }
+            },1000);
+        }
+    });
+      
+    $(function(){
+        $("#start").on("click",showdata);
+        async function showdata () {
+            let sh = await loadSheets('1317150!A1:G100');
+            c1 = sh.values[1][1];
+            c2 = sh.values[2][1];
+            c3 = sh.values[3][1];
+            c4 = sh.values[4][1];
+	    }
+    });
+
+    let room = "s1317150";
+    let socket = io.connect('https://qa.fujimura.com');
+    let myid;
+    let x, y, speedX, speedY;
+    $('#id').hide();
+    $('#room_id').hide();
+    $("#alert").hide();
+
+    document.querySelector("#room").innerHTML = room;
+    socket.on('mylogin', function(data) {
+      myid = data;
+      socket.emit('join', room); // 受信room IDを指定
+      document.querySelector("#myid").innerHTML = myid;
+      console.log("あなたのID: ", myid);
+    });
+
+    socket.on('sensor', function(data) {
+      speedX = parseInt(data.g)*0.05;
+      speedY = parseInt(data.b)*0.05;
+    });
+
+	function setup() {
+	  createCanvas(600,600);
+      speedX = 0;
+      speedY = 0;
+      people = loadImage("people.png");
+      bg = loadImage("bg.jpg");
+      stage=0;
+      k=0;
+      textAlign(CENTER);
+	}
+
+	function draw() {
+      image(bg, 0, 0, width, height);
+      noStroke();
+      fill(255, 0);
+      rect(0,0,width,height);
+	  x = x + speedX;
+      y = y + speedY;
+      if(517<x){
+          x = 517;
+      }else if(46>x){
+          x = 46;
+      }
+      if(517<y){
+          y = 517;
+      }else if(y<46){
+          y = 46;
+      }
+        
+        
+      //2行目
+      if(51<y && y<=138){
+          if(51<x && x<230){
+              y -= speedY;
+              x -= speedX;
+          }
+          if(286<x && x<414){
+              y -= speedY;
+              x -= speedX;
+          }
+          if(424<x && x<506){
+              y -= speedY;
+              x -= speedX;
+          }
+      }
+        
+      //3行目
+      if(138<y && y<=148){
+          if(148<x && x<230){
+              x -= speedX;
+          }
+          if(424<x && x<506){
+              x -= speedX;
+          }
+      }
+        
+      //4行目
+      if(148<y && y<=230){
+          if(x<230){
+              y -= speedY;
+              x -= speedX;
+          }
+          if(332<x){
+              y -= speedY;
+              x -= speedX;
+          }
+      }
+        
+      //6行目
+      if(240<y && y<=322){
+          if(51<x && x<506){
+              y -= speedY;
+              x -= speedX;
+          }
+      }
+        
+      //7行目
+      if(322<y && y<=332){
+          if(424<x && x<506){
+              x -= speedX;
+          }
+      }
+        
+      //8行目
+      if(332<y && y<=414){
+          if(x<230){
+              y -= speedY;
+              x -= speedX;
+          }
+          if(332<x && x<414){
+              y -= speedY;
+              x -= speedX;
+          }
+          if(424<x && x<506){
+              y -= speedY;
+              x -= speedX;
+          }
+      }
+        
+      //9行目
+      if(414<y && y<=419){
+          if(148<x && x<230){
+              x -= speedX;
+          }
+          if(332<x && x<414){
+              x -= speedX;
+          }
+      }
+        
+      //10行目
+      if(419<y && y<=507){
+          if(51<x && x<138){
+              y -= speedY;
+              x -= speedX;
+          }
+          if(148<x && x<230){
+              y -= speedY;
+              x -= speedX;
+          }
+          if(235<x && x<322){
+              y -= speedY;
+              x -= speedX;
+          }
+          if(332<x && x<506){
+              y -= speedY;
+              x -= speedX;
+          }
+      }
+      
+      //11行目
+      if(507<y){
+          if(51<x && x<138){
+              x -= speedX;
+          }
+          if(332<x && x<414){
+              x -= speedX;
+          }
+      }
+      
+      //10行目以外
+      if(y<=507){
+          if(235<x && x<322){
+              x -= speedX;
+          }
+      }
+        
+        
+      switch (stage) {
+        case 0:
+
+            $("#start").on("click",function(){
+                stage=1;
+                $("#start").hide();
+            });
+            x = 512;
+            y = 143;
+            break;
+
+        case 1:
+
+            if(137<x && x<148 && 137<y && y<148){
+                if(k==0){
+                    document.getElementById('contents').innerHTML = "<img src='key.png' width='30'>";
+                    k=1;
+                }
+            }
+            if (x<51 && y>507){
+                if(k==1){
+                    stage=2;
+                }else{
+                    $("#alert").show();
+                }
+            }else{
+                $("#alert").hide();
+            }
+            image(people, x, y, 40, 40);
+            break;
+
+        case 2:
+            
+              noStroke();
+              fill(0, 100);
+              rect(0,0,width,height);
+              strokeWeight(5);
+              fill(255);
+              stroke(0, 0, 135);
+              strokeJoin(ROUND);
+              textSize(36);
+              if(count<=60){
+                  text(c1,width/2,height/2);
+              }
+              if(60<count && count<=90){
+                  text(c2,width/2,height/2);
+              }
+              if(90<count && count<=120){
+                  text(c3,width/2,height/2);
+              }
+              if(120<count){
+                  text(c4,width/2,height/2);
+              }
+              break;
+      }
+    }
+ </script>
+ </body>
+ </html>
