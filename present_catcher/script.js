@@ -84,8 +84,6 @@ function draw() {
           text('FAIL', width/2, height/2-50); // 失敗表示
         }
         stage=5;
-        sound.pause();
-        sound.currentTime = 0;
       }
     }
     break;
@@ -119,6 +117,7 @@ function mousePressed() {
     stage++;
   }else if (stage==5) {
     setup();
-    sound.stop();
+    sound.pause();
+    sound.currentTime = 0;
   }
 }
