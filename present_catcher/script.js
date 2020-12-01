@@ -24,7 +24,9 @@ function setup() {
   y1=height-239;
   stage=0;
   result=0;
-  sound.loop();
+  if (sound.isPlaying() == false) {
+    sound.play();
+  }
 }
 
 function draw() {
