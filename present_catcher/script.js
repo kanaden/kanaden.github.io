@@ -24,6 +24,7 @@ function setup() {
   y1=height-239;
   stage=0;
   result=0;
+  sound.play();
 }
 
 function draw() {
@@ -41,7 +42,6 @@ function draw() {
     } else {
       stage++;
     }
-    sound.play();
     break;
 
   case 2: // 垂直降下
