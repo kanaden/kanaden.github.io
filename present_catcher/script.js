@@ -116,9 +116,11 @@ function mousePressed() {
     stage++;
   }else if (stage==5) {
     setup();
-    sound.pause();
-    sound.currentTime = 0;
-  }if else (stage==0) {
-    sound.play();
   }
+  if (song.isPlaying()) {
+        sound.stop();
+    }
+    else {
+        sound.play();
+    }
 }
