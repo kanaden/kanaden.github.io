@@ -1,6 +1,5 @@
 let x, x1, y, y1, n=2, stage, result;
 let ufo1, ufo2, ufo3, box, kabe, kabe2, kabe2_1, kabe3, bear;
-let sound;
 
 function preload(){
   ufo1 = loadImage('https://kanaden.github.io/imgs/ufo1.png');
@@ -12,7 +11,6 @@ function preload(){
   kabe2_1 = loadImage('https://kanaden.github.io/imgs/kabe2_1.jpg');
   kabe3 = loadImage('https://kanaden.github.io/imgs/kabe3.jpg');
   bear = loadImage('https://kanaden.github.io/imgs/bear.png');
-  sound = loadSound('https://kanaden.github.io/sound/bgm.wav');
 }
 
 function setup() {
@@ -34,7 +32,6 @@ function draw() {
   case 0: // 初期状態
     fill(100);
     text('Click to start',width/2,height/2-50);
-    sound.play();
     break;
 
   case 1: // 水平移動
@@ -85,7 +82,6 @@ function draw() {
           text('FAIL', width/2, height/2-50); // 失敗表示
         }
         stage=5;
-        sound.stop();
       }
     }
     break;
