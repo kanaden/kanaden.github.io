@@ -29,20 +29,13 @@ function setup() {
 function draw() {
   frameRate(30);
   image(kabe, 0, 0, width, 400);
-  if (mouseIsPressed) {
-  //もしマウスボタンが押されていたら
-    if (sound.isPlaying() == false) {
-      //サウンドが停止していたら再生開始
-      sound.play();
-    } else {
-      //サウンド停止
-      sound.stop();
-    }
-  }
   switch (stage) {
   case 0: // 初期状態
     fill(100);
     text('Click to start',width/2,height/2-50);
+    if (mousePressed) {
+      sound.play();
+    }
     break;
 
   case 1: // 水平移動
@@ -93,6 +86,9 @@ function draw() {
           text('FAIL', width/2, height/2-50); // 失敗表示
         }
         stage=5;
+        if (mousePressed) {
+          sound.stop();
+        }
       }
     }
     break;
