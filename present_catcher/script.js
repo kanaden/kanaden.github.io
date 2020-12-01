@@ -29,6 +29,16 @@ function setup() {
 function draw() {
   frameRate(30);
   image(kabe, 0, 0, width, 400);
+  if (mouseIsPressed) {
+  //もしマウスボタンが押されていたら
+    if (sound.isPlaying() == false) {
+      //サウンドが停止していたら再生開始
+      sound.play();
+    } else {
+      //サウンド停止
+      sound.stop();
+    }
+  }
   switch (stage) {
   case 0: // 初期状態
     fill(100);
@@ -117,10 +127,4 @@ function mousePressed() {
   }else if (stage==5) {
     setup();
   }
-  if (song.isPlaying()) {
-        sound.stop();
-    }
-    else {
-        sound.play();
-    }
 }
