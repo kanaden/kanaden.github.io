@@ -24,6 +24,7 @@ function setup() {
   y1=height-239;
   stage=0;
   result=0;
+  sound.loop();
 }
 
 function draw() {
@@ -115,10 +116,6 @@ function mousePressed() {
   if ( stage<2 ) {
     stage++;
   }else if (stage==5) {
-    sound.stop();
-    setup();
-  }
-  if (stage==0) {
-    sound.play();
+    stage=0;
   }
 }
