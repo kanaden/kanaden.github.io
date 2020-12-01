@@ -33,6 +33,7 @@ function draw() {
   case 0: // 初期状態
     fill(100);
     text('Click to start',width/2,height/2-50);
+    sound.play();
     break;
 
   case 1: // 水平移動
@@ -119,8 +120,5 @@ function mousePressed() {
   }else if (stage==5) {
     setup();
     sound.stop();
-  }
-  if (stage==0) {
-    sound.play();
   }
 }
