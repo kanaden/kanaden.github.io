@@ -1,4 +1,4 @@
-let x, x1, y, y1, n=2, stage, result, sound;
+let x, x1, y, y1, n=2, stage, result;
 let ufo1, ufo2, ufo3, box, kabe, kabe2, kabe2_1, kabe3, bear;
 
 function preload(){
@@ -11,7 +11,6 @@ function preload(){
   kabe2_1 = loadImage('https://kanaden.github.io/imgs/kabe2_1.jpg');
   kabe3 = loadImage('https://kanaden.github.io/imgs/kabe3.jpg');
   bear = loadImage('https://kanaden.github.io/imgs/bear.png');
-  sound = loadSound('https://kanaden.github.io/sound/bgm.wav');
 }
 
 function setup() {
@@ -24,7 +23,6 @@ function setup() {
   y1=height-239;
   stage=0;
   result=0;
-  sound.loop();
 }
 
 function draw() {
@@ -116,6 +114,6 @@ function mousePressed() {
   if ( stage<2 ) {
     stage++;
   }else if (stage==5) {
-    stage=0;
+    setup();
   }
 }
