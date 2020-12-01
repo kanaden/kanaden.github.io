@@ -25,7 +25,6 @@ function setup() {
   y1=height-239;
   stage=0;
   result=0;
-  sound.play();
 }
 
 function draw() {
@@ -35,6 +34,7 @@ function draw() {
   case 0: // 初期状態
     fill(100);
     text('Click to start',width/2,height/2-50);
+    sound.play();
     break;
 
   case 1: // 水平移動
@@ -85,6 +85,7 @@ function draw() {
           text('FAIL', width/2, height/2-50); // 失敗表示
         }
         stage=5;
+        sound.stop();
       }
     }
     break;
