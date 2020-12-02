@@ -26,7 +26,7 @@ function setup() {
   sound.play();
 }
 
-function gamestart(){
+function gamestart() {
   x1=random(125, width-63);
   y1=height-239;
 }
