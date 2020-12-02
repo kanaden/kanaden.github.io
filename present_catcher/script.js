@@ -79,11 +79,12 @@ function draw() {
       if (result==1&&y1<height-70) { // 成功時、プレゼント落下
         y1+=n*6;
       } else {
-        fill(100);
         if (result!=0) {
+          fill(255, 100, 100);
           text('GET!!', width/2, height/2-50); // 成功表示
           result=2;
         } else {
+          fill(100, 100, 255);
           text('FAIL', width/2, height/2-50); // 失敗表示
         }
         stage=5;
