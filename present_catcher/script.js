@@ -23,7 +23,7 @@ function setup() {
   gamestart();
   stage=0;
   result=0;
-  //sound.play();
+  sound.loop();
 }
 
 function gamestart() {
@@ -122,6 +122,5 @@ function mousePressed() {
   }else if (stage==5) {
     gamestart();
     stage=0;
-    sound.play();
   }
 }
