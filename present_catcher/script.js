@@ -23,7 +23,6 @@ function setup() {
   gamestart();
   stage=0;
   result=0;
-  sound.loop();
 }
 
 function gamestart() {
@@ -36,7 +35,7 @@ function draw() {
   image(kabe, 0, 0, width, 400);
   switch (stage) {
   case 0: // 初期状態
-    fill(100);
+    fill(100, 200, 0);
     text('Click to start',width/2,height/2-50);
     break;
 
@@ -122,5 +121,8 @@ function mousePressed() {
   }else if (stage==5) {
     gamestart();
     stage=0;
+  }
+  if (stage==0) {
+         sound.loop();
   }
 }
