@@ -35,7 +35,7 @@ function draw() {
   image(kabe, 0, 0, width, 400);
   switch (stage) {
   case 0: // 初期状態
-    fill(255, 164, 122);
+    fill(255, 138, 84);
     text('Click to start',width/2,height/2-50);
     break;
 
@@ -116,7 +116,7 @@ function draw() {
 }
 
 function mousePressed() {
-  if (sound.isPlaying()) {
+  if (sound.isPlaying()==true) {
     sound.stop();
   }
   else {
