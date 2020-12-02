@@ -23,7 +23,6 @@ function setup() {
   gamestart();
   stage=0;
   result=0;
-  sound.loop();
 }
 
 function gamestart() {
@@ -36,7 +35,7 @@ function draw() {
   image(kabe, 0, 0, width, 400);
   switch (stage) {
   case 0: // 初期状態
-    fill(240, 128, 128);
+    fill(255, 164, 122);
     text('Click to start',width/2,height/2-50);
     break;
 
@@ -117,6 +116,13 @@ function draw() {
 }
 
 function mousePressed() {
+  if (song.isPlaying()) {
+    song.stop();
+  }
+  else {
+    song.play();
+  }
+  
   if ( stage<2 ) {
     stage++;
   }else if (stage==5) {
