@@ -116,9 +116,9 @@ function draw() {
 }
 
 function mousePressed() {
-    if (sound.isPlaying()==false) {
-      sound.play();
-    }
+  if (sound.isPlaying()==false) {
+    sound.loop();
+  }
   
   if (stage<2) {
     stage++;
