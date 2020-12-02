@@ -36,7 +36,7 @@ function draw() {
   image(kabe, 0, 0, width, 400);
   switch (stage) {
   case 0: // 初期状態
-    fill(100, 200, 0);
+    fill(200, 150, 0);
     text('Click to start',width/2,height/2-50);
     break;
 
