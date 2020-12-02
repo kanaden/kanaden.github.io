@@ -23,6 +23,7 @@ function setup() {
   gamestart();
   stage=0;
   result=0;
+  sound.loop();
 }
 
 function gamestart() {
@@ -32,11 +33,10 @@ function gamestart() {
 
 function draw() {
   frameRate(30);
-  sound.loop();
   image(kabe, 0, 0, width, 400);
   switch (stage) {
   case 0: // 初期状態
-    fill(200, 150, 0);
+    fill(240, 128, 128);
     text('Click to start',width/2,height/2-50);
     break;
 
