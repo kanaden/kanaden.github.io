@@ -116,14 +116,11 @@ function draw() {
 }
 
 function mousePressed() {
-  if (sound.isPlaying()==true) {
-    sound.stop();
-  }
-  else {
-    sound.play();
-  }
+    if (sound.isPlaying()==false) {
+      sound.play();
+    }
   
-  if ( stage<2 ) {
+  if (stage<2) {
     stage++;
   }else if (stage==5) {
     gamestart();
