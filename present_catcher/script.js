@@ -22,12 +22,12 @@ function setup() {
   y=0;
   gamestart();
   stage=0;
-  result=0;
 }
 
 function gamestart() {
   x1=random(125, width-63);
   y1=height-239;
+  result=0;
 }
 
 function draw() {
@@ -35,7 +35,7 @@ function draw() {
   image(kabe, 0, 0, width, 400);
   switch (stage) {
   case 0: // 初期状態
-    fill(255, 138, 84);
+    fill(255, 175, 36);
     text('Click to start',width/2,height/2-50);
     break;
 
