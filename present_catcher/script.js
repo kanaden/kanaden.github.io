@@ -32,6 +32,7 @@ function gamestart() {
 
 function draw() {
   frameRate(30);
+  sound.loop();
   image(kabe, 0, 0, width, 400);
   switch (stage) {
   case 0: // 初期状態
@@ -121,8 +122,5 @@ function mousePressed() {
   }else if (stage==5) {
     gamestart();
     stage=0;
-  }
-  if (stage==0) {
-         sound.loop();
   }
 }
